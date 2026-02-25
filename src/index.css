@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+@font-face {
+	font-family: "Halo Dek";
+	src: url("/src/scoreboard/assets/Halo%20Dek.ttf") format("truetype");
+}

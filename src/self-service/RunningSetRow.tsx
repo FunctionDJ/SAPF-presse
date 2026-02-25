@@ -2,7 +2,7 @@ import { TableCell, TableRow, Typography } from "@mui/material";
 import type { Slot } from "../../shared/startgg-schemas";
 
 interface Props {
-	slot: Slot | undefined;
+	slot: typeof Slot.infer | undefined;
 }
 
 export const RunningSetRow = ({ slot }: Props) => (

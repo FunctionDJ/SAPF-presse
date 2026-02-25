@@ -21,16 +21,16 @@ import {
 import { green, purple } from "@mui/material/colors";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import type { SetType } from "../../shared/startgg-schemas";
+import { trpc } from "../trpc-client";
 import { mainThemeConfig } from "./mainTheme";
 import { RunningSetRow } from "./RunningSetRow";
-import type { TSet } from "../../shared/startgg-schemas";
 import { StationDialogs } from "./StationDialogs";
 import { Timer } from "./Timer";
-import { trpc } from "../trpc-client";
 
 interface Props {
 	id: number;
-	sets: TSet[];
+	sets: (typeof SetType.infer)[];
 }
 
 // TODO slippi connection status with icon etc

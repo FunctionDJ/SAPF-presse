@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { z, type ZodError } from "zod";
-import { eventSchema } from "../../shared/startgg-schemas";
+import { type as arkType, type } from "arktype";
+import { Event } from "../../shared/startgg-schemas";
 import { MiddleSection } from "./MiddleSection";
 
-const querySchema = z.object({
-	data: z.object({
-		tournament: z.object({
-			events: z.array(eventSchema),
-		}),
-	}),
+const querySchemaArk = arkType({
+	data: {
+		tournament: {
+			events: Event.array(),
+		},
+	},
 });
 
 const gql = `
@@ -79,11 +79,13 @@ export function App() {
 			})
 				.then((r) => r.json())
 				.then((data) => {
-					try {
-						return querySchema.parse(data);
-					} catch (error) {
-						throw new Error(z.prettifyError(error as ZodError));
+					const out = querySchemaArk(data);
+
+					if (out instanceof type.errors) {
+						throw new Error(out.summary);
 					}
+
+					return out;
 				}),
 	});
 

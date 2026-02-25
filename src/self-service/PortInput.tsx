@@ -1,10 +1,10 @@
 import { Close } from "@mui/icons-material";
 import { DialogContentText, Radio } from "@mui/material";
-import type { Participant } from "../../shared/startgg-schemas";
 import type { Dispatch } from "react";
+import type { Participant } from "../../shared/startgg-schemas";
 
 interface Props {
-	participant: Participant;
+	participant: typeof Participant.infer;
 	portsInput: (number | null)[];
 	setPortsInput: Dispatch<(number | null)[]>;
 }

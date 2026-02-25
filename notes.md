@@ -15,6 +15,8 @@
 
 - live characters + costumes auslesen und per tRPC an stream-layout exposen
 
+- wenn pause-quit und 3min vergangen dann checken ob jemand last-stock war. wenn ja, set zählen (je nach stocks, %)
+
 ## alle
 
 - meine credits (waffeln) mit "go play Project+!" klein und in die ecke packen, aber maybe nicht on-stream
@@ -26,3 +28,14 @@
 - stretch goal: 2-station und 1-station varianten mit dashboard toggle dafür
 - indicator für connection status mit backend
 - nach set ende das gerade abgeschlossene set noch 1-2 minuten anzeigen und danach "next set" info (queue)
+
+## links
+
+slippi replay bundles
+https://drive.google.com/drive/folders/15FBqMJPd6tMrFkEX-wJAKmXPLWZ4gM69
+
+https://github.com/jmlee337/replay-manager-for-slippi
+
+https://github.com/jmlee337/discord-tournament-bot
+
+https://github.com/SSBDoppler/slippi-hud

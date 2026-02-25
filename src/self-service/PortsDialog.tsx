@@ -7,13 +7,13 @@ import {
 	DialogTitle,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState, type Dispatch } from "react";
-import { PortInput } from "./PortInput";
-import type { TSet } from "../../shared/startgg-schemas";
+import { useState, type Dispatch } from "react";
+import type { SetType } from "../../shared/startgg-schemas";
 import { trpc } from "../trpc-client";
+import { PortInput } from "./PortInput";
 
 interface Props {
-	set: TSet;
+	set: typeof SetType.infer;
 	open: boolean;
 	setOpen: Dispatch<boolean>;
 	ports: (number | null)[];

@@ -1,8 +1,67 @@
-import { PlayerRow } from "./PlayerRow";
+import { useEffect, useState } from "react";
+import { PlayerBox } from "./PlayerBox";
+import type { PlayerState } from "./PlayerRow";
+
+const players: [
+	[PlayerState, PlayerState],
+	[PlayerState, PlayerState],
+	[PlayerState, PlayerState],
+	[PlayerState, PlayerState],
+] = [
+	[
+		{
+			tag: "sprak",
+			pronouns: "they/them",
+			score: 0,
+		},
+		{
+			tag: "sprak",
+			pronouns: "they/them",
+			score: 0,
+		},
+	],
+	[
+		{
+			tag: "sprakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+			pronouns: "they/them",
+			score: 1,
+		},
+		{
+			tag: "sprak",
+			pronouns: "they/them",
+			score: 0,
+		},
+	],
+
+	[
+		{
+			tag: "sprak",
+			pronouns: "they/them",
+			score: 0,
+		},
+		{
+			tag: "sprak",
+			pronouns: "they/them",
+			score: 0,
+		},
+	],
+	[
+		{
+			tag: "sprakkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+			pronouns: "they/them",
+			score: 1,
+		},
+		{
+			tag: "sprak",
+			pronouns: "they/them",
+			score: 0,
+		},
+	],
+];
 
 export const PlayerBoxes = () => {
-	// const r = 200;
-	// const [name, setName] = useState("");
+	const r = 200;
+	const [name, setName] = useState("");
 
 	// useEffect(() => {
 	// 	let counter = 0;
@@ -18,34 +77,37 @@ export const PlayerBoxes = () => {
 
 	return (
 		<div id="player-boxes" className="absolute h-full w-full">
-			<div className="bg-pink-500 h-1/6 w-5/6 rounded-l-[3vw] ml-auto mt-[10%] relative leading-[4vw]">
-				<PlayerRow
-					className="bottom-1/2"
-					tag="noxxa"
-					score={2}
-					pronouns="test/ing"
-				/>
-				<PlayerRow
-					className="bottom-0"
-					tag="sprak"
-					score={1}
-					pronouns="test/ing"
-				/>
-			</div>
-			<div className="bg-orange-500 h-1/6 w-5/6 rounded-r-[3vw] mr-auto mt-[10%] relative leading-[4vw]">
-				<PlayerRow
-					className="bottom-1/2"
-					tag="noxxa"
-					score={2}
-					pronouns="test/ing"
-				/>
-				<PlayerRow
-					className="bottom-0"
-					tag="sprak"
-					score={1}
-					pronouns="test/ing"
-				/>
-			</div>
+			<PlayerBox
+				align="R"
+				className="bg-pink-500 mt-[10%]"
+				players={[
+					{
+						tag: name,
+						pronouns: "they/them",
+						score: 1,
+					},
+					{
+						tag: "sprak",
+						pronouns: "they/them",
+						score: 0,
+					},
+				]}
+			/>
+			<PlayerBox
+				align="L"
+				className="bg-orange-500 mt-[40%]"
+				players={players[1]}
+			/>
+			<PlayerBox
+				align="L"
+				className="bg-purple-500 mt-[150%]"
+				players={players[2]}
+			/>
+			<PlayerBox
+				align="R"
+				className="bg-emerald-500 mt-[120%]"
+				players={players[3]}
+			/>
 		</div>
 	);
 };

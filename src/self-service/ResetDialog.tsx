@@ -8,11 +8,11 @@ import {
 	DialogTitle,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { TSet } from "../../shared/startgg-schemas";
+import type { SetType } from "../../shared/startgg-schemas";
 import { trpc } from "../trpc-client";
 
 interface Props {
-	set: TSet;
+	set: typeof SetType.infer;
 	open: boolean;
 	onClose: () => void;
 	stationId: number;

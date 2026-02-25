@@ -7,12 +7,12 @@ import {
 	DialogContentText,
 	DialogTitle,
 } from "@mui/material";
+import type { SetType } from "../../shared/startgg-schemas";
 import { PortsDialog } from "./PortsDialog";
 import { ResetDialog } from "./ResetDialog";
-import type { TSet } from "../../shared/startgg-schemas";
 
 interface Props {
-	set: TSet;
+	set: typeof SetType.infer;
 	ports: (number | null)[];
 	hwDialogOpen: boolean;
 	setHwDialogOpen: (open: boolean) => void;
