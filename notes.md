@@ -9,11 +9,6 @@
 - bauen
 - manual overrides für overlay (spieler, characters + costume, score, runde/pool etc)
 - nach set ende das gerade abgeschlossene set noch 1-2 minuten anzeigen aber mit "next set" button
-- "call set" funktion mit timer wie lange der call schon dauert und evtl DQ button
-
-WIP prompt:
-add a dashboard in a "dashboard" folder in #file:src . look at the notes in #file:notes.md to see additional requirements, but basically the dashboard is meant for streamers and tournament organizers and should have full overview and control over the system, meaning it should display everything in state (see #file:state.ts ).
-some more context: if you happen to look at #file:self-service, you should know that it currently talks directly to start.gg itself, which
 
 ## slippi schnittstelle
 
