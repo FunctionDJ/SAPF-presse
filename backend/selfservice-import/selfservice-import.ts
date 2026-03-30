@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { type } from "arktype";
-import { fetchStartGG } from "../../shared/fetch-startgg";
+import { fetchStartGG } from "../startgg-interface/fetch-startgg";
 import { stationProcedure } from "../dashboard-import/dashboard-import";
 import { Ports, signalUpdate } from "../state";
 import { publicProcedure, router } from "../trpc-server";

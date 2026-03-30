@@ -20,16 +20,10 @@ export async function fetchStartGG(params: {
 }) {
 	const { query, schema, variables = {} } = params;
 
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	const apiKey: string =
-		typeof window === "undefined"
-			? process.env.VITE_STARTGG_API_KEY
-			: import.meta.env.VITE_STARTGG_API_KEY;
-
 	const response = await fetch("https://api.start.gg/gql/alpha", {
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${apiKey}`,
+			Authorization: `Bearer ${process.env.STARTGG_API_KEY}`,
 		},
 		body: JSON.stringify({ query, variables }),
 	});

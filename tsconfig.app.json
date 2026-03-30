@@ -20,7 +20,6 @@
 		"strict": true,
 		"strictNullChecks": true,
 		"exactOptionalPropertyTypes": true,
-		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true,

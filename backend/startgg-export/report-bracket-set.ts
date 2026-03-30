@@ -1,4 +1,4 @@
-import { fetchStartGG } from "../fetch-startgg";
+import { fetchStartGG } from "../startgg-interface/fetch-startgg";
 
 export interface Selection {
 	entrantId: number;

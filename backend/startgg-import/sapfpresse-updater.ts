@@ -1,6 +1,6 @@
 import { type } from "arktype";
-import { Event } from "../../shared/startgg-schemas";
-import { updateStateMut } from "../state";
+import { signalUpdate, state } from "../state";
+import { Event } from "./startgg-schemas";
 import { getNewStationByEvents } from "./startgg-transformers";
 
 const Response = type({
@@ -69,7 +69,7 @@ const fetchStartGGAndUpdateState = async () => {
 			query: gql,
 		}),
 		headers: {
-			Authorization: `Bearer ${process.env.VITE_STARTGG_API_KEY}`,
+			Authorization: `Bearer ${process.env.STARTGG_API_KEY}`,
 		},
 	});
 
@@ -82,11 +82,11 @@ const fetchStartGGAndUpdateState = async () => {
 		throw new Error(out.summary);
 	}
 
-	updateStateMut((state) => {
-		state.stations = state.stations.map((oldStation) =>
-			getNewStationByEvents(oldStation, out.data.tournament.events),
-		);
-	});
+	state.stations = state.stations.map((oldStation) =>
+		getNewStationByEvents(oldStation, out.data.tournament.events),
+	);
+
+	signalUpdate();
 };
 
 setInterval(() => {

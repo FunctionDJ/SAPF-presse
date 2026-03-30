@@ -1,7 +1,7 @@
 import pkg from "@slippi/slippi-js/node";
 import { startReplayWriter } from "../replay-export/replay-export";
-import { updateStateOnSettingsEvent } from "./update-state-on-settings-event";
 import { reportBracketSetBySlippiData } from "../startgg-export/report-bracket-set-by-slippi-data";
+import { updateStateOnSettingsEvent } from "./update-state-on-settings-event";
 
 const {
 	ConnectionEvent,
@@ -11,12 +11,6 @@ const {
 	SlpParser,
 	SlpParserEvent,
 } = pkg;
-
-export type GameEndHandler = (params: {
-	gameEnd: pkg.GameEndType;
-	settings: pkg.GameStartType;
-	stationId: number;
-}) => unknown;
 
 export const createSlippiConnection = async ({
 	ip,

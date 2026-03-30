@@ -1,5 +1,3 @@
-import { createTheme } from "@mui/material";
-
 export const mainThemeConfig = {
 	typography: {
 		fontSize: 20,
@@ -21,4 +19,5 @@ export const mainThemeConfig = {
 	},
 } as const;
 
-export const mainTheme = createTheme(mainThemeConfig);
+// TODO remove this if nothing's missing
+// export const mainTheme = createTheme(mainThemeConfig);

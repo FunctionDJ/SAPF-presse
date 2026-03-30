@@ -1,7 +1,7 @@
 import type { Stage } from "@slippi/slippi-js/node";
 import { type } from "arktype";
 import { EventEmitter } from "node:stream";
-import type { SetState } from "../shared/schema-utils";
+import type { SetState } from "./startgg-import/startgg-schemas";
 
 export const PlayerInCurrentSet = type({
 	startggParticipantId: "number|null",
@@ -49,7 +49,7 @@ export interface UpcomingSet {
 }
 
 /** startgg player id or null (no player) */
-export const Port = type("number|null");
+const Port = type("number|null");
 
 export const Ports = type([Port, Port, Port, Port]);
 
@@ -73,23 +73,14 @@ export interface State {
 	centerText: string;
 }
 
-export let state: State = {
+// TODO state speichern? was wenn prozess crasht? was ist mit den ports, overrides etc?
+
+export const state: State = {
 	stations: [],
 	centerText: "",
 };
 
 export const emitter = new EventEmitter();
-
-/** @deprecated */
-export const updateState = (patchFn: (oldState: State) => State) => {
-	state = patchFn(state);
-	emitter.emit("data", state);
-};
-
-export const updateStateMut = (patchFn: (oldState: State) => void) => {
-	patchFn(state);
-	emitter.emit("data", state);
-};
 
 export const signalUpdate = () => {
 	emitter.emit("data", state);

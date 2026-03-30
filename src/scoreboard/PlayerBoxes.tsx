@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PlayerBox } from "./PlayerBox";
 import type { PlayerState } from "./PlayerRow";
 

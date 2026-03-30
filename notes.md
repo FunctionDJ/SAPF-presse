@@ -52,3 +52,5 @@ https://github.com/Readek/Melee-Stream-Tool
   - package management umstellen wenn da noch was zu tun ist
   - package.json scripts umstellen und tsx entfernen
   - backend server auf bun apis umstellen und auch sonstige node APIs im projekt
+
+- trpc/tanstack-react-query benutzen

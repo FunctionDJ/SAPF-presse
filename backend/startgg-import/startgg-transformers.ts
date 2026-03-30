@@ -1,9 +1,4 @@
-import type {
-	Participant,
-	Slot,
-	SetType,
-	Event,
-} from "../../shared/startgg-schemas";
+import type { Participant, Slot, SetType, Event } from "./startgg-schemas";
 import type {
 	CurrentSet,
 	EntrantInCurrentSet,

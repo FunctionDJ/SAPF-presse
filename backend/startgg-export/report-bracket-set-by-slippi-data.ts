@@ -1,9 +1,6 @@
 import type { GameEndType } from "@slippi/slippi-js/node";
-import { fetchActiveSet } from "../../shared/startgg/fetch-active-set";
-import {
-	reportBracketSet,
-	type Selection,
-} from "../../shared/startgg/report-bracket-set";
+import { fetchActiveSet } from "./fetch-active-set";
+import { reportBracketSet, type Selection } from "./report-bracket-set";
 import { state } from "../state";
 import {
 	slippiCharacterToStartGGCharacter,

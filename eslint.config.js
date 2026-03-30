@@ -15,6 +15,11 @@ export default defineConfig(
 	reactPlugin.configs.flat["jsx-runtime"],
 	reactHooks.configs.flat.recommended,
 	{
+		settings: {
+			react: {
+				version: "detect",
+			},
+		},
 		languageOptions: {
 			parserOptions: {
 				projectService: true,

@@ -1,6 +1,7 @@
 import { type } from "arktype";
-import { fetchStartGG } from "../fetch-startgg";
-import { id } from "../schema-utils";
+import { fetchStartGG } from "../startgg-interface/fetch-startgg";
+
+const id = type("number.integer >= 0");
 
 const Game = type({
 	orderNum: id,
