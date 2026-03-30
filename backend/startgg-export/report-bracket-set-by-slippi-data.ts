@@ -44,6 +44,13 @@ export const reportBracketSetBySlippiData = async ({
 		return;
 	}
 
+	if (station.mode !== "startgg") {
+		console.warn(
+			`${logPrefix} Station mode is not "startgg" (is "${station.mode}"), skipping report`,
+		);
+		return;
+	}
+
 	const { currentSet } = station;
 
 	if (currentSet === null) {
