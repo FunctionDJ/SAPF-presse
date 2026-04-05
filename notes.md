@@ -6,9 +6,9 @@
 
 ## dashboard
 
-- bauen
-- manual overrides für overlay (spieler, characters + costume, score, runde/pool etc)
+- manual overrides für overlay (characters + costume, score, runde/pool etc)
 - nach set ende das gerade abgeschlossene set noch 1-2 minuten anzeigen aber mit "next set" button
+- tracken, ob eine station sich via self-service gerade im setup befindet und dann manual port assignment disablen, damit man sich mit manual ports assignment etc nicht in die quere kommt
 
 ## slippi schnittstelle
 
@@ -16,6 +16,7 @@
 
 ## alle
 
+- UI crash detection / warning für backend
 - meine credits (waffeln) mit "go play Project+!" klein und in die ecke packen, aber maybe nicht on-stream
 - **(außer stream-layout) timer wenn ein set gecalled wird**
 
@@ -43,9 +44,15 @@ https://github.com/Readek/Melee-Stream-Tool
 
 - das system soll in der lage sein, es zu verkraften, wenn ein set per self-service erst nach dem start eines matches gestartet wurde, also dass per slippi trotzdem immer die aktuellen characters und die stage gespeichert werden, falls erst danach ein match gestartet und dann character/stage für mindestens das overlay, aber im optimalfall für startgg vorhanden sind
 
-- backend mit bun testen und wenn es keine probleme wegen bun gibt dann darauf committen und dann
-  - package management umstellen wenn da noch was zu tun ist
-  - package.json scripts umstellen und tsx entfernen
-  - backend server auf bun apis umstellen und auch sonstige node APIs im projekt
+- trpc/tanstack-react-query benutzen wo es noch nicht benutzt wird
 
-- trpc/tanstack-react-query benutzen
+## future
+
+- support station management via /dashboard
+  - create, edit, delete stations
+  - manage slippi connections like IP and port
+  - either startgg or this app needs to "own" the stations and synchronize with the other system (maybe, might actually not be needed)
+
+## concerns
+
+- if a startgg set that's a currentSet in sapfpresse is accidentally removed from the stream queue, removed from the station, or assigned a non-side-stream station, can sapfpresse recover from that after the error is corrected or does it wipe state data?

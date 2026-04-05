@@ -4,6 +4,24 @@
 		"strings": "on"
 	},
 	// prioritize ArkType's "type" for autoimports
-	"typescript.preferences.autoImportSpecifierExcludeRegexes": ["^(node:)?os$"],
-	"typescript.referencesCodeLens.enabled": true
+	"js/ts.preferences.autoImportSpecifierExcludeRegexes": ["^(node:)?os$"],
+	"js/ts.referencesCodeLens.enabled": true,
+	"chat.tools.terminal.autoApprove": {
+		"/^bun typecheck 2>&1$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^bun lint 2>&1$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^bun dev$/": {
+			"approve": true,
+			"matchCommandLine": true
+		},
+		"/^bun typecheck$/": {
+			"approve": true,
+			"matchCommandLine": true
+		}
+	}
 }
