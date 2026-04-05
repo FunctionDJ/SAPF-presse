@@ -27,19 +27,9 @@ const Set_ = type({
 });
 
 export const fetchActiveSet = async (stationId: number) => {
-	const data = await fetchStartGG({
-		schema: type({
-			tournament: {
-				events: type({
-					sets: {
-						nodes: Set_.array(),
-					},
-				}).array(),
-			},
-		}),
-		query: `
+	const data = await fetchStartGG(`
 			query GetSetAtStation {
-				tournament(slug: "${String(process.env.TOURNAMENT_SLUG)}") {
+				tournament(slug: "${String(Bun.env.TOURNAMENT_SLUG)}") {
 					events {
 						sets(filters: {stationNumbers: [${String(stationId)}], state: 2}) {
 							nodes {
@@ -72,8 +62,19 @@ export const fetchActiveSet = async (stationId: number) => {
 					}
 				}
 			}
-		`,
-	});
+		`);
 
-	return data.tournament.events.flatMap((event) => event.sets.nodes).at(0);
+	const validatedData = type({
+		tournament: {
+			events: type({
+				sets: {
+					nodes: Set_.array(),
+				},
+			}).array(),
+		},
+	}).assert(data);
+
+	return validatedData.tournament.events
+		.flatMap((event) => event.sets.nodes)
+		.at(0);
 };

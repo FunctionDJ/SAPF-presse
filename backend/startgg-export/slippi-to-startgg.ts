@@ -1,6 +1,4 @@
-import pkg from "@slippi/slippi-js/node";
-
-const { Character, Stage } = pkg;
+import { Character, Stage } from "@slippi/slippi-js/node";
 
 /**
  * reference query on startgg:

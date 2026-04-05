@@ -19,10 +19,9 @@ export const reportBracketSet = async ({
 		selections: Selection[];
 	}[];
 }) => {
-	console.log("reportBracketSet");
-	console.log("setId", setId);
-	console.log("set winnerId", winnerId);
-	console.log("gameData", JSON.stringify(gameData, null, 2));
+	const logPrefix = `[StartggExport] [SetId ${setId}]`;
+	console.log(`${logPrefix} winnerId`, winnerId);
+	console.log(`${logPrefix} gameData`, JSON.stringify(gameData, null, 2));
 
 	const variables: {
 		setId: number;
@@ -37,8 +36,8 @@ export const reportBracketSet = async ({
 		variables.winnerId = winnerId;
 	}
 
-	await fetchStartGG({
-		query: `
+	await fetchStartGG(
+		`
 			mutation ReportSet($setId: ID!, $gameData: [BracketSetGameDataInput], $winnerId: Int) {
 				reportBracketSet(setId: $setId, gameData: $gameData, winnerId: $winnerId) {
 					id
@@ -46,5 +45,5 @@ export const reportBracketSet = async ({
 			}
 		`,
 		variables,
-	});
+	);
 };

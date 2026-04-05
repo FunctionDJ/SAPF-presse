@@ -1,25 +1,35 @@
 import { type } from "arktype";
-import { signalUpdate, state } from "../state";
-import { Event } from "./startgg-schemas";
-import { getNewStationByEvents } from "./startgg-transformers";
+import { globalState as globalState, updateStateSync } from "../state";
+import { SetType } from "./startgg-schemas";
+import { getNewStationByStreamQueueSets } from "./startgg-transformers";
+import { fetchStartGG } from "../startgg-interface/fetch-startgg";
 
-const Response = type({
-	data: {
-		tournament: {
-			events: Event.array(),
-		},
-	},
-});
+// TODO
 
-const gql = `
-query SetsAtStations {
-  tournament(slug: "sapf2-test") {
-    events {
-      sets(filters: {stationNumbers: [1,2,3,4]}) {
-        nodes {
+/**
+ * the request and the surrounding code need to consider the stream queue.
+ * right now, all sets from the stations are fetched and the stream queue is ignored.
+ */
+
+const fetchStartGGAndUpdateState = async () => {
+	if (
+		globalState.startggTournamentId === null ||
+		globalState.startggStreamQueueIdToTrack === null
+	) {
+		return;
+	}
+
+	const data = await fetchStartGG(`
+    query StreamQueues {
+      streamQueue(tournamentId: ${globalState.startggTournamentId}, includePlayerStreams: false) {
+        id
+        sets {
           id
+          round
           phaseGroup {
             displayIdentifier
+            numRounds
+            bracketType
           }
           state
           startedAt
@@ -58,38 +68,39 @@ query SetsAtStations {
           }
         }
       }
-    }
-  }
-}`;
+    }`);
 
-const fetchStartGGAndUpdateState = async () => {
-	const response = await fetch("https://api.start.gg/gql/alpha", {
-		method: "POST",
-		body: JSON.stringify({
-			query: gql,
-		}),
-		headers: {
-			Authorization: `Bearer ${process.env.STARTGG_API_KEY}`,
-		},
-	});
+	const validatedData = type({
+		streamQueue: type({
+			id: "string",
+			sets: SetType.array(),
+		}).array(),
+	}).assert(data);
 
-	const data = await response.json();
-	const out = Response(data);
-
-	if (out instanceof type.errors) {
-		// TODO better error handling
-		console.error("Error fetching/parsing start.gg data:", out.summary);
-		throw new Error(out.summary);
-	}
-
-	state.stations = state.stations.map((oldStation) =>
-		getNewStationByEvents(oldStation, out.data.tournament.events),
+	const streamQueue = validatedData.streamQueue.find(
+		(sq) => sq.id === globalState.startggStreamQueueIdToTrack,
 	);
 
-	signalUpdate();
+	if (streamQueue === undefined) {
+		throw new Error(
+			`Stream queue with id ${globalState.startggStreamQueueIdToTrack} not found in start.gg response, either wrong tournament or deleted stream queue configured`,
+		);
+	}
+
+	updateStateSync((state) => {
+		state.stations = state.stations.map((oldStation) =>
+			getNewStationByStreamQueueSets(oldStation, streamQueue.sets),
+		);
+	});
 };
 
+void fetchStartGGAndUpdateState();
+
 setInterval(() => {
-	// TODO errors get discarded here
-	void fetchStartGGAndUpdateState();
+	fetchStartGGAndUpdateState().catch((err: unknown) => {
+		console.error(
+			"[StartggImport] Error fetching or JSON-parsing start.gg data (skipping state update):",
+			err,
+		);
+	});
 }, 5000);

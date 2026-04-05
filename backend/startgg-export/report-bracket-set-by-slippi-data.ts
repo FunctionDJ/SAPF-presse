@@ -1,11 +1,12 @@
 import type { GameEndType } from "@slippi/slippi-js/node";
 import { fetchActiveSet } from "./fetch-active-set";
 import { reportBracketSet, type Selection } from "./report-bracket-set";
-import { state } from "../state";
+import { globalState } from "../state";
 import {
 	slippiCharacterToStartGGCharacter,
 	slippiStageToStartGGStageId,
 } from "./slippi-to-startgg";
+import { getPlayersFromCurrentSet } from "../../shared/entrant-utils";
 
 export const reportBracketSetBySlippiData = async ({
 	gameEnd,
@@ -35,7 +36,7 @@ export const reportBracketSetBySlippiData = async ({
 		return;
 	}
 
-	const station = state.stations.find(
+	const station = globalState.stations.find(
 		(s) => s.startggStationNumber === stationNumber,
 	);
 
@@ -70,15 +71,7 @@ export const reportBracketSetBySlippiData = async ({
 
 	const entrants = [currentSet.entrantA, currentSet.entrantB];
 
-	const players = entrants.flatMap((entrant) => {
-		const playersInEntrant = [entrant.player1];
-
-		if (entrant.player2) {
-			playersInEntrant.push(entrant.player2);
-		}
-
-		return playersInEntrant;
-	});
+	const players = getPlayersFromCurrentSet(currentSet);
 
 	const winnerEntrant = entrants.find(
 		(entrant) =>
@@ -118,7 +111,7 @@ export const reportBracketSetBySlippiData = async ({
 			);
 
 			const startggCharacterId = slippiCharacterToStartGGCharacter(
-				player.character,
+				player.slippiCharacterId,
 			);
 
 			if (entrant === undefined || startggCharacterId === null) {
@@ -147,7 +140,7 @@ export const reportBracketSetBySlippiData = async ({
 			// this is just the winnerId for this match, not the whole set
 			winnerId: winnerEntrant.startggEntrantId,
 			gameNum: existingGames.length + 1,
-			stageId: slippiStageToStartGGStageId(currentSet.stage),
+			stageId: slippiStageToStartGGStageId(currentSet.slippiStage),
 			selections,
 		},
 	];

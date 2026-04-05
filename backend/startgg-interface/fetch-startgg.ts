@@ -1,51 +1,39 @@
-/// <reference types="node" />
-import { type, type Type } from "arktype";
+import { type } from "arktype";
 
-export async function fetchStartGG<T>(params: {
-	query: string;
-	schema: Type<T>;
-	variables?: Record<string, unknown>;
-}): Promise<T>;
+const StartGGGraphQLResponse = type({
+	data: "unknown",
+}).or({
+	errors: type({
+		message: "string",
+	}).array(),
+});
 
-export async function fetchStartGG(params: {
-	query: string;
-	schema?: never;
-	variables?: Record<string, unknown>;
-}): Promise<unknown>;
-
-export async function fetchStartGG(params: {
-	query: string;
-	schema?: Type;
-	variables?: Record<string, unknown>;
-}) {
-	const { query, schema, variables = {} } = params;
-
+export const fetchStartGG = async (
+	query: string,
+	variables: Record<string, unknown> = {},
+) => {
 	const response = await fetch("https://api.start.gg/gql/alpha", {
 		method: "POST",
 		headers: {
-			Authorization: `Bearer ${process.env.STARTGG_API_KEY}`,
+			Authorization: `Bearer ${Bun.env.STARTGG_API_KEY}`,
 		},
 		body: JSON.stringify({ query, variables }),
 	});
 
-	const json: unknown = await response.json();
+	const json = await response.json();
+	const result = StartGGGraphQLResponse(json);
 
-	const result = type({
-		data: "unknown",
-	})
-		.or({
-			success: "false",
-			message: "string",
-		})
-		.assert(json);
-
-	if ("success" in result) {
-		throw new Error(`GraphQL error: ${result.message}`);
+	if (result instanceof type.errors) {
+		throw new Error(
+			`[FetchStartGG] Invalid response: ${result.summary}\nResponse was: ${JSON.stringify(json, null, 2)}`,
+		);
 	}
 
-	if (schema === undefined) {
-		return result.data;
+	if ("errors" in result) {
+		throw new Error(
+			`[FetchStartGG] GraphQL error(s): ${result.errors.map((e) => e.message).join(", ")}`,
+		);
 	}
 
-	return schema.assert(result.data);
-}
+	return result.data;
+};

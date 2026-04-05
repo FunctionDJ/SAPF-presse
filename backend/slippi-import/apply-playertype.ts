@@ -5,6 +5,6 @@ export const applyPlayerTypeToState = (
 	playerInCurrentSet: typeof PlayerInCurrentSet.infer,
 	playerType: PlayerType,
 ) => {
-	playerInCurrentSet.character = playerType.characterId ?? null;
-	playerInCurrentSet.characterColor = playerType.characterColor ?? null;
+	playerInCurrentSet.slippiCharacterId = playerType.characterId ?? null;
+	playerInCurrentSet.slippiCharacterColorId = playerType.characterColor ?? null;
 };

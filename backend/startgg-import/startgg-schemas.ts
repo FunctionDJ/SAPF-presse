@@ -29,7 +29,7 @@ export const Slot = type({
 	},
 });
 
-export const SetState = type("number").pipe((val) => {
+const SetStateFromStartgg = type("number").pipe((val) => {
 	switch (val) {
 		case 1:
 			return "created";
@@ -52,21 +52,31 @@ export const SetState = type("number").pipe((val) => {
 
 export const SetType = type({
 	id: "number",
+	/** negative = losers side */
+	round: "number.integer",
 	station: {
 		number: "number",
 	},
 	slots: Slot.array(),
 	phaseGroup: {
 		displayIdentifier: "string",
+		numRounds: "number.integer",
+		/** we actually only care about DOUBLE_ELIMINATION and ROUND_ROBIN for pools */
+		bracketType: type.or(
+			"'SINGLE_ELIMINATION'",
+			"'DOUBLE_ELIMINATION'",
+			"'ROUND_ROBIN'",
+			"'SWISS'",
+			"'EXHIBITION'",
+			"'CUSTOM_SCHEDULE'",
+			"'MATCHMAKING'",
+			"'ELIMINATION_ROUNDS'",
+			"'RACE'",
+			"'CIRCUIT'",
+		),
 	},
-	state: SetState,
+	state: SetStateFromStartgg,
 	startedAt: type("number | null").pipe((val) =>
 		val === null ? null : new Date(val * 1000),
 	),
-});
-
-export const Event = type({
-	sets: {
-		nodes: SetType.array(),
-	},
 });

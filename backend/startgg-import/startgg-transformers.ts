@@ -1,4 +1,3 @@
-import type { Participant, Slot, SetType, Event } from "./startgg-schemas";
 import type {
 	CurrentSet,
 	EntrantInCurrentSet,
@@ -8,6 +7,7 @@ import type {
 	Station,
 	UpcomingSet,
 } from "../state";
+import type { Participant, SetType, Slot } from "./startgg-schemas";
 
 const participantToPlayerInCurrentSet = (
 	participant: typeof Participant.infer,
@@ -15,8 +15,8 @@ const participantToPlayerInCurrentSet = (
 	startggParticipantId: participant.id,
 	tag: participant.gamerTag,
 	pronouns: participant.user?.genderPronoun ?? "",
-	character: null,
-	characterColor: null,
+	slippiCharacterId: null,
+	slippiCharacterColorId: null,
 });
 
 const slotToCurrentSetEntrant = (
@@ -30,8 +30,8 @@ const slotToCurrentSetEntrant = (
 				startggParticipantId: null,
 				tag: "[missing participant]",
 				pronouns: "",
-				character: null,
-				characterColor: null,
+				slippiCharacterId: null,
+				slippiCharacterColorId: null,
 			},
 	player2: slot.entrant.participants[1]
 		? participantToPlayerInCurrentSet(slot.entrant.participants[1])
@@ -40,14 +40,14 @@ const slotToCurrentSetEntrant = (
 
 const participantToPlayerInUpcomingSet = (
 	participant: typeof Participant.infer,
-): PlayerInUpcomingSet => ({
+): typeof PlayerInUpcomingSet.infer => ({
 	tag: participant.gamerTag,
 	pronouns: participant.user?.genderPronoun ?? "",
 });
 
 const slotToUpcomingSetEntrant = (
 	slot: typeof Slot.infer,
-): EntrantInUpcomingSet => ({
+): typeof EntrantInUpcomingSet.infer => ({
 	player1: slot.entrant.participants[0]
 		? participantToPlayerInUpcomingSet(slot.entrant.participants[0])
 		: {
@@ -71,7 +71,9 @@ const getSlotsFromSetOrThrow = (set: typeof SetType.infer) => {
 	return [slotA, slotB] as const;
 };
 
-const setToCurrentSet = (set: typeof SetType.infer): CurrentSet => {
+const setToCurrentSet = (
+	set: typeof SetType.infer,
+): typeof CurrentSet.infer => {
 	const [slotA, slotB] = getSlotsFromSetOrThrow(set);
 
 	return {
@@ -79,13 +81,15 @@ const setToCurrentSet = (set: typeof SetType.infer): CurrentSet => {
 		state: set.state,
 		phaseGroupDisplayIdentifier: set.phaseGroup.displayIdentifier,
 		startedAt: set.startedAt ? new Date(set.startedAt) : null,
-		stage: null,
+		slippiStage: null,
 		entrantA: slotToCurrentSetEntrant(slotA),
 		entrantB: slotToCurrentSetEntrant(slotB),
 	};
 };
 
-const setToUpcomingSet = (set: typeof SetType.infer): UpcomingSet => {
+const setToUpcomingSet = (
+	set: typeof SetType.infer,
+): typeof UpcomingSet.infer => {
 	const [slotA, slotB] = getSlotsFromSetOrThrow(set);
 
 	return {
@@ -97,15 +101,28 @@ const setToUpcomingSet = (set: typeof SetType.infer): UpcomingSet => {
 	};
 };
 
-export const getNewStationByEvents = (
-	oldStation: Station,
-	events: (typeof Event.infer)[],
-): Station => {
-	const sggSetsAtThisStation = events.flatMap((event) =>
-		event.sets.nodes.filter(
-			(set) => set.station.number === oldStation.startggStationNumber,
-		),
+export const getNewStationByStreamQueueSets = (
+	oldStation: typeof Station.infer,
+	allSetsInStreamQueue: (typeof SetType.infer)[],
+): typeof Station.infer => {
+	const logPrefix = `[StartggImport] [Station ${oldStation.startggStationNumber}]`;
+
+	// TODO
+
+	/**
+	 * i think this place also needs some code to handle filtering all station sets to those that are on the stream queue
+	 */
+
+	const sggSetsAtThisStation = allSetsInStreamQueue.filter(
+		(set) => set.station.number === oldStation.startggStationNumber,
 	);
+
+	// TODO
+
+	/**
+	 * for example the below code is probably actually wrong because it should just do
+	 * "from the stream queue, take the top set at this station" and ignore the set state.
+	 */
 
 	const currentSGGSet = sggSetsAtThisStation.find(
 		(set) => set.state === "active",
@@ -125,13 +142,13 @@ export const getNewStationByEvents = (
 		const { currentSet } = stationClone;
 
 		if (currentSet === null) {
-			console.warn("Station has no currentSet in state, skipping score update");
+			// this case is shown via dashboard as "no current set in state"
 			return stationClone;
 		}
 
 		if (currentSGGSet === undefined) {
 			console.warn(
-				"Station has currentSet, but no active set (startgg) at this station, skipping score update",
+				`${logPrefix} Station has currentSet, but no active set (startgg) at this station, skipping score update`,
 			);
 			return stationClone;
 		}
@@ -139,13 +156,6 @@ export const getNewStationByEvents = (
 		const [slotA, slotB] = getSlotsFromSetOrThrow(currentSGGSet);
 		const valueA = slotA.standing.stats.score.value;
 		const valueB = slotB.standing.stats.score.value;
-
-		if (valueA === null || valueB === null) {
-			console.warn(
-				"Score value of startgg active set is null for one of the slots, skipping score update",
-			);
-			return stationClone;
-		}
 
 		currentSet.entrantA.score = valueA;
 		currentSet.entrantB.score = valueB;
