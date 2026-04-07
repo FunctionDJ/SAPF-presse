@@ -25,6 +25,7 @@ import { mainThemeConfig } from "./main-theme";
 import { RunningSetRow } from "./RunningSetRow";
 import { StationDialogs } from "./StationDialogs";
 import { Timer } from "./Timer";
+import { Round } from "./Round";
 
 interface Props {
 	station: typeof Station.infer;
@@ -112,7 +113,11 @@ export const StationComponent = ({ station }: Props) => {
 								<TableRow>
 									<TableCell colSpan={3} align="center">
 										<Typography>
-											Pool {currentSet?.phaseGroupDisplayIdentifier ?? "-"}
+											{currentSet === null ? (
+												"[No currentSet]"
+											) : (
+												<Round set={currentSet} />
+											)}
 										</Typography>
 									</TableCell>
 								</TableRow>

@@ -1,12 +1,13 @@
 import { Typography } from "@mui/material";
 import type { UpcomingSet } from "../../backend/state";
 import { entrantLabel } from "../../shared/entrant-utilities";
+import { Round } from "../self-service/Round";
 
-export function UpcomingSetsDisplay({
-	sets,
-}: {
+interface Props {
 	sets: (typeof UpcomingSet.infer)[];
-}) {
+}
+
+export function UpcomingSetsDisplay({ sets }: Props) {
 	return (
 		<div className="flex flex-col gap-1">
 			<Typography variant="subtitle2">Upcoming Sets</Typography>
@@ -21,7 +22,7 @@ export function UpcomingSetsDisplay({
 						{entrantLabel(set.entrantA)} vs. {entrantLabel(set.entrantB)}
 					</Typography>
 					<Typography variant="body2">
-						— Pool {set.phaseGroupDisplayIdentifier}
+						— <Round set={set} />
 					</Typography>
 				</div>
 			))}

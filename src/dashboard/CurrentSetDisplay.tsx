@@ -1,6 +1,7 @@
 import { Chip, Typography } from "@mui/material";
 import type { CurrentSet } from "../../backend/state";
 import { entrantLabel } from "../../shared/entrant-utilities";
+import { Round } from "../self-service/Round";
 
 export function CurrentSetDisplay({
 	currentSet,
@@ -27,13 +28,11 @@ export function CurrentSetDisplay({
 					size="small"
 					color={currentSet.state === "active" ? "success" : "default"}
 				/>
-				{currentSet.phaseGroupDisplayIdentifier !== null && (
-					<Chip
-						label={"Pool " + currentSet.phaseGroupDisplayIdentifier}
-						size="small"
-						variant="outlined"
-					/>
-				)}
+				<Chip
+					label={<Round set={currentSet} />}
+					size="small"
+					variant="outlined"
+				/>
 			</div>
 			<Typography variant="body2">
 				{entrantLabel(currentSet.entrantA)}
