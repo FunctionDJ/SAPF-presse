@@ -1,19 +1,6 @@
-import { Button, TextField, Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { Typography } from "@mui/material";
 import type { OverrideEntrant } from "../../backend/state";
-import { trpc } from "../trpc-client";
-
-const emptyEntrant: typeof OverrideEntrant.infer = {
-	player1: {
-		tag: "",
-		pronouns: "",
-		character: null,
-		characterColor: null,
-	},
-	player2: null,
-	score: null,
-};
+import { EntrantOverride } from "./EntrantOverride";
 
 export function OverrideControls({
 	stationNumber,
@@ -22,84 +9,20 @@ export function OverrideControls({
 	stationNumber: number;
 	entrantOverride: [typeof OverrideEntrant.infer, typeof OverrideEntrant.infer];
 }) {
-	const [a, setA] = useState(entrantOverride[0]);
-	const [b, setB] = useState(entrantOverride[1]);
-
-	const mutation = useMutation(
-		trpc.dashboard.setEntrantOverride.mutationOptions(),
-	);
-
-	const apply = () => {
-		mutation.mutate({ stationNumber, entrantOverride: [a, b] });
-	};
-
-	const clear = () => {
-		setA(emptyEntrant);
-		setB(emptyEntrant);
-	};
-
 	return (
 		<div className="flex flex-col gap-2">
 			<Typography variant="subtitle2">Entrant Override</Typography>
-			<div className="flex gap-2">
-				<TextField
-					label="Entrant A Tag"
-					size="small"
-					value={a.player1.tag}
-					onChange={(event) =>
-						setA({
-							...a,
-							player1: { ...a.player1, tag: event.target.value },
-						})
-					}
+			<div className="flex flex-col gap-2">
+				<EntrantOverride
+					entrant={entrantOverride[0]}
+					side="left"
+					stationNumber={stationNumber}
 				/>
-				<TextField
-					label="Entrant A Score"
-					size="small"
-					type="number"
-					className="w-24"
-					value={a.score ?? ""}
-					onChange={(event) =>
-						setA({
-							...a,
-							score:
-								event.target.value === "" ? null : Number(event.target.value),
-						})
-					}
+				<EntrantOverride
+					entrant={entrantOverride[1]}
+					side="right"
+					stationNumber={stationNumber}
 				/>
-				<TextField
-					label="Entrant B Tag"
-					size="small"
-					value={b.player1.tag}
-					onChange={(event) =>
-						setB({
-							...b,
-							player1: { ...b.player1, tag: event.target.value },
-						})
-					}
-				/>
-				<TextField
-					label="Entrant B Score"
-					size="small"
-					type="number"
-					className="w-24"
-					value={b.score ?? ""}
-					onChange={(event) =>
-						setB({
-							...b,
-							score:
-								event.target.value === "" ? null : Number(event.target.value),
-						})
-					}
-				/>
-			</div>
-			<div className="flex gap-2">
-				<Button variant="contained" size="small" onClick={apply}>
-					Apply Override
-				</Button>
-				<Button variant="outlined" size="small" onClick={clear}>
-					Clear
-				</Button>
 			</div>
 		</div>
 	);

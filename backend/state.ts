@@ -26,7 +26,6 @@ const OverridePlayer = type({
 	tag: "string",
 	pronouns: "string",
 	character: type("number|null"),
-	// TODO implement characterColor in frontend
 	characterColor: type("number|null"),
 });
 

@@ -107,9 +107,10 @@ export const dashboardRouter = router({
 			ctx.station.ports = input.ports;
 		}),
 	setEntrantOverride: stationProcedure
-		.input(type({ entrantOverride: [OverrideEntrant, OverrideEntrant] }))
+		.input(type({ side: "'left'|'right'", entrantOverride: OverrideEntrant }))
 		.mutation(({ input, ctx }) => {
-			ctx.station.entrantOverride = input.entrantOverride;
+			ctx.station.entrantOverride[input.side === "left" ? 0 : 1] =
+				input.entrantOverride;
 		}),
 	setBasicTextOverride: stationProcedure
 		.input(type({ basicTextOverride: "string" }))
