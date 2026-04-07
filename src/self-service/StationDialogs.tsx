@@ -65,6 +65,10 @@ export const StationDialogs = ({
 			</DialogActions>
 		</Dialog>
 		<PortsDialog
+			// use key={} to reset state when ports in global state update
+			// this isn't perfect and might be disruptive, but should be a functional and easy solution for now.
+			// when the Dialog is open, ideally you'd do something like show the user a notification that the ports were remotely changed and prompt them to accept or discard the remote update.
+			key={JSON.stringify(ports)}
 			currentSet={currentSet}
 			open={portDialogOpen}
 			setOpen={setPortDialogOpen}

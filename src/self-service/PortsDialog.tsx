@@ -34,12 +34,6 @@ export const PortsDialog = ({
 	const players = getPlayersFromCurrentSet(currentSet);
 	const [portsInput, setPortsInput] = useState(ports);
 
-	// TODO port resetting is not working properly
-
-	// useEffect(() => {
-	// 	setPortsInput(ports);
-	// }, [ports]);
-
 	const onClose = () => {
 		setOpen(false);
 		setPortsInput(ports);
