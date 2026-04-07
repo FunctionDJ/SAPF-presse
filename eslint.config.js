@@ -1,19 +1,29 @@
 // @ts-check
 
+import react from "@eslint-react/eslint-plugin";
 import eslint from "@eslint/js";
-import reactPlugin from "eslint-plugin-react";
-import reactHooks from "eslint-plugin-react-hooks";
 import { defineConfig } from "eslint/config";
-import tseslint from "typescript-eslint";
+import typescript from "typescript-eslint";
+import unicorn from "eslint-plugin-unicorn";
+import tanstackQuery from "@tanstack/eslint-plugin-query";
+import deMorganBooleanLogic from "eslint-plugin-de-morgan";
+import importX from "eslint-plugin-import-x";
+import reactCompiler from "eslint-plugin-react-compiler";
+import reactRefresh from "eslint-plugin-react-refresh";
 
 export default defineConfig([
 	{ ignores: ["eslint.config.js", "eslint-rules/*.js"] },
 	eslint.configs.recommended,
-	tseslint.configs.strictTypeChecked,
-	tseslint.configs.stylisticTypeChecked,
-	reactPlugin.configs.flat.recommended,
-	reactPlugin.configs.flat["jsx-runtime"],
-	reactHooks.configs.flat.recommended,
+	importX.flatConfigs.recommended,
+	importX.flatConfigs.typescript,
+	...tanstackQuery.configs["flat/recommended-strict"],
+	typescript.configs.strictTypeChecked,
+	typescript.configs.stylisticTypeChecked,
+	unicorn.configs.recommended,
+	reactCompiler.configs.recommended,
+	reactRefresh.configs.vite,
+	deMorganBooleanLogic.configs.recommended,
+	react.configs["strict-type-checked"],
 	{
 		settings: {
 			react: {
@@ -27,6 +37,13 @@ export default defineConfig([
 		},
 		rules: {
 			curly: "error",
+			// allow null because i prefer explicit null and avoid undefined
+			"unicorn/no-null": "off",
+			"unicorn/prevent-abbreviations": [
+				"error",
+				// allow "Props" for react props interfaces
+				{ allowList: { Props: true } },
+			],
 			"@typescript-eslint/strict-boolean-expressions": "error",
 			"@typescript-eslint/consistent-return": "error",
 			"@typescript-eslint/consistent-type-imports": "error",
@@ -49,6 +66,13 @@ export default defineConfig([
 			"@typescript-eslint/switch-exhaustiveness-check": "error",
 			"@typescript-eslint/restrict-template-expressions": "off",
 			"@typescript-eslint/no-confusing-void-expression": "off",
+		},
+	},
+	// force PascalCase for .tsx
+	{
+		files: ["**/*.tsx"],
+		rules: {
+			// "unicorn/filename-case": ["error", { case: "pascalCase" }],
 		},
 	},
 	{
