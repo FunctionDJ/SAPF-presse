@@ -1,4 +1,4 @@
-import { type JSX } from "react";
+import type { JSX } from "react";
 import { TrpcErrorNotifications } from "./TrpcErrorNotifications.tsx";
 import { commonMain } from "./common-main.tsx";
 

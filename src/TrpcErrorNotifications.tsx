@@ -11,7 +11,9 @@ export const TrpcErrorNotifications = () => {
 		(listener) => {
 			listenerContainer.listener = listener;
 			return () => {
-				listenerContainer.listener = () => {};
+				listenerContainer.listener = () => {
+					/** no-op */
+				};
 			};
 		},
 		() => tRPCErrorRecord,
@@ -25,7 +27,7 @@ export const TrpcErrorNotifications = () => {
 				variant="filled"
 				onClose={clearTrpcErrors}
 			>
-				{record?.path ? (
+				{record?.path != null ? (
 					<>
 						{record.path}:
 						<br />

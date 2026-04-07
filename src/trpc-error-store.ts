@@ -1,7 +1,9 @@
 import { type } from "arktype";
 
 export const listenerContainer = {
-	listener: () => {},
+	listener: () => {
+		/** no-op */
+	},
 };
 
 export let tRPCErrorRecord: {

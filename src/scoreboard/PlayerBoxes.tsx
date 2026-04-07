@@ -60,8 +60,8 @@ const players: [
 ];
 
 export const PlayerBoxes = () => {
-	const r = 200;
-	const [name, setName] = useState("");
+	// const r = 200;
+	const [name] = useState("");
 
 	// useEffect(() => {
 	// 	let counter = 0;
