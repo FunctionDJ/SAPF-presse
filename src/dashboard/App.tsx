@@ -78,7 +78,11 @@ export function App() {
 					))}
 				</div>
 			</div>
-			<Toaster />
+			<Toaster
+				toastOptions={{
+					duration: 20000,
+				}}
+			/>
 		</ThemeProvider>
 	);
 }

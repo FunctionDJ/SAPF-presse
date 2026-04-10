@@ -107,7 +107,8 @@ export const slippiRouter = router({
 				gameEnd,
 			})
 				.catch((error: unknown) => {
-					logger.error("Failed to report set", error);
+					logger.error("Failed to report set", error); // TODO this happens on report without a processed SETTINGS event (at least)
+					// and for some reason i don't see any details in the logs.
 				})
 				.finally(() => {
 					// parser.reset() is necessary for SlpParserEvent.SETTINGS to be emitted again
@@ -118,21 +119,22 @@ export const slippiRouter = router({
 		connectionSet.parserEndListenerReference = endListener;
 		connectionSet.parser.on(SlpParserEvent.END, endListener);
 
-		await connectionSet.conn.connect(
+		await connectionSet.startConnection(
 			ctx.station.slippi.ip,
 			ctx.station.slippi.port,
 			false,
-			3,
+			5000,
 		);
 	}),
 	stopStationConnection: stationProcedure.mutation(({ ctx }) => {
 		if (
 			ctx.station.slippi.slippiState.status !== "connected" &&
-			ctx.station.slippi.slippiState.status !== "connecting"
+			ctx.station.slippi.slippiState.status !== "connecting" &&
+			ctx.station.slippi.slippiState.status !== "reconnect-wait"
 		) {
 			throw new TRPCError({
 				code: "BAD_REQUEST",
-				message: `Station ${ctx.station.startggStationNumber} not connected, can't stop connection`,
+				message: `Station ${ctx.station.startggStationNumber} is "${ctx.station.slippi.slippiState.status}", can't stop connection`,
 			});
 		}
 
@@ -156,8 +158,10 @@ export const slippiRouter = router({
 			connectionSet.parserEndListenerReference,
 		);
 
-		connectionSet.conn.disconnect();
+		connectionSet.stopConnection();
 		connectionSet.parser.reset(); // next SETTINGS event won't be emitted without resetting the parser
+
+		ctx.station.slippi.slippiState = { status: "disconnected" };
 	}),
 	resetError: stationProcedure.mutation(({ ctx }) => {
 		if (ctx.station.slippi.slippiState.status !== "error") {

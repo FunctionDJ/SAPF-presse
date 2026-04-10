@@ -25,21 +25,21 @@ export const reportBracketSet = async ({
 	logger.info(`gameData`, { gameData });
 
 	const variables: {
-		setId: number;
+		setId: string;
 		gameData: typeof gameData;
-		winnerId?: number;
+		winnerId?: string;
 	} = {
-		setId,
+		setId: String(setId),
 		gameData,
 	};
 
 	if (winnerId !== null) {
-		variables.winnerId = winnerId;
+		variables.winnerId = String(winnerId);
 	}
 
 	await fetchStartGG(
 		`
-			mutation ReportSet($setId: ID!, $gameData: [BracketSetGameDataInput], $winnerId: Int) {
+			mutation ReportSet($setId: ID!, $gameData: [BracketSetGameDataInput], $winnerId: ID) {
 				reportBracketSet(setId: $setId, gameData: $gameData, winnerId: $winnerId) {
 					id
 				}

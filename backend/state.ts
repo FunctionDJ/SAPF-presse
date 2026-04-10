@@ -29,7 +29,7 @@ export const EntrantInActiveStartGGSet = type({
 	startggEntrantId: "number",
 	player1: PlayerInActiveStartGGSet,
 	player2: PlayerInActiveStartGGSet.or("null"),
-	score: "number|null",
+	score: "number",
 });
 
 export const EntrantInActiveSet = type({

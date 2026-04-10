@@ -1,10 +1,10 @@
 import { prefixLogger } from "../logger";
 import type {
 	CurrentSet,
-	EntrantInActiveStartGGSet,
 	Entrant,
-	PlayerInActiveStartGGSet,
+	EntrantInActiveStartGGSet,
 	Player,
+	PlayerInActiveStartGGSet,
 	Station,
 	UpcomingSet,
 } from "../state";
@@ -23,7 +23,7 @@ const slotToCurrentSetEntrant = (
 	slot: typeof Slot.infer,
 ): typeof EntrantInActiveStartGGSet.infer => ({
 	startggEntrantId: slot.entrant.id,
-	score: slot.standing.stats.score.value ?? null,
+	score: slot.standing.stats.score.value ?? 0,
 	player1: slot.entrant.participants[0]
 		? participantToPlayerInCurrentSet(slot.entrant.participants[0])
 		: {
@@ -114,11 +114,16 @@ export const transformStationByStreamQueueSets = (
 	);
 
 	const sggSetsAtThisStation = allSetsInStreamQueue.filter(
-		(set) => set.station.number === station.startggStationNumber,
+		(set) =>
+			set.station.number === station.startggStationNumber &&
+			set.state !== "invalid",
 	);
 
 	station.upcomingSets = sggSetsAtThisStation
-		.filter((set) => set.id !== station.currentSet?.startggSetId)
+		.filter(
+			(set) =>
+				set.id !== station.currentSet?.startggSetId && set.state === "queued",
+		)
 		.map((set) => setToUpcomingSet(set));
 
 	const activeSSGSetsAtThisStation = sggSetsAtThisStation.filter(
@@ -126,53 +131,58 @@ export const transformStationByStreamQueueSets = (
 	);
 
 	if (activeSSGSetsAtThisStation.length > 1) {
+		// [FUTURE] customize and explain this issue more accurately for the different scenarios, i.e. if currentSet is in queue or not
+
 		logger.warn(
-			`Found multiple active sets at this station in the stream queue. First one is picked, other(s) are considered upcoming!`,
+			`Found multiple active sets at this station in the stream queue.`,
 		);
 	}
 
-	// [STARTGG] asking on the discord right now.
+	// if the currentSet.id is in the stream queue and active, then we update it
 
-	/**
-	 *  the below code might not be as resilient as it could be because it should just do
-	 * "from the stream queue, take the top set from the queue at this station" and ignore the set state.
-	 * but as i learned now, the queue is basically completely up to the TOs to control, so i guess
-	 * you could have a two active sets in the queue.
-	 */
+	const { currentSet } = station;
 
-	const [currentSGGSet] = activeSSGSetsAtThisStation;
+	if (currentSet !== null) {
+		const ssgSetLastKnownSet = sggSetsAtThisStation.find(
+			(set) => set.id === currentSet.startggSetId,
+		);
 
-	// update current set if id changed
-	if (
-		currentSGGSet !== undefined &&
-		currentSGGSet.id !== station.currentSet?.startggSetId // TODO we want to have a feature where when a set finished, the currentSet lingers around for like a 30 seconds till a minute, so maybe we expand the currentSet to include a finishedAt field and only override it once the time has passed
-	) {
-		station.currentSet = setToCurrentSet(currentSGGSet);
-		station.ports = [null, null, null, null];
-	} else {
-		// update score
+		// TODO we want to have a feature where when a set finished, the currentSet lingers around for like a 30 seconds till a minute, so maybe we expand the currentSet to include a finishedAt field and only override it once the time has passed
 
-		const { currentSet } = station;
-
-		if (currentSet === null) {
-			// this case is shown via dashboard as "no current set in state"
-			station.currentSet = null;
+		if (ssgSetLastKnownSet === undefined) {
+			logger.info(`Current set not found in the stream queue`);
+		} else {
+			const [slotA, slotB] = getSlotsFromSetOrThrow(ssgSetLastKnownSet);
+			currentSet.state = ssgSetLastKnownSet.state;
+			currentSet.entrantA.score = slotA.standing.stats.score.value ?? 0;
+			currentSet.entrantB.score = slotB.standing.stats.score.value ?? 0;
 			return;
 		}
+	}
 
-		if (currentSGGSet === undefined) {
+	// either there's no currentSet, or it's not in the queue anymore, so we pull the next set from the queue
+	// the startgg set we adopt as currentSet is the station+queue's first active set, or is none are active, the station+queue's first set
+
+	const ssgSetToAdopt =
+		activeSSGSetsAtThisStation[0] ?? sggSetsAtThisStation[0];
+
+	if (ssgSetToAdopt === undefined) {
+		if (currentSet !== null) {
 			logger.warn(
-				`Station has currentSet, but no active set (startgg) at this station, skipping score update`,
+				`No sets in the stream queue for this station, setting currentSet to null.`,
 			);
 
-			return;
+			station.currentSet = null;
+			station.ports = [null, null, null, null];
 		}
 
-		const [slotA, slotB] = getSlotsFromSetOrThrow(currentSGGSet);
-		const valueA = slotA.standing.stats.score.value;
-		const valueB = slotB.standing.stats.score.value;
-
-		currentSet.entrantA.score = valueA;
-		currentSet.entrantB.score = valueB;
+		return;
 	}
+
+	logger.info(
+		`Adopting set ${ssgSetToAdopt.id} as current set for this station`,
+	);
+
+	station.currentSet = setToCurrentSet(ssgSetToAdopt);
+	station.ports = [null, null, null, null];
 };

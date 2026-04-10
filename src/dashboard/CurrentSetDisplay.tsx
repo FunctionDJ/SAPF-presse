@@ -1,7 +1,7 @@
 import { Chip, Typography } from "@mui/material";
 import type { CurrentSet } from "../../backend/state";
 import { entrantLabel } from "../../shared/entrant-utilities";
-import { Round } from "../self-service/Round";
+import { setToRoundText } from "../shared-frontend/set-to-roundtext";
 
 export function CurrentSetDisplay({
 	currentSet,
@@ -29,7 +29,7 @@ export function CurrentSetDisplay({
 					color={currentSet.state === "active" ? "success" : "default"}
 				/>
 				<Chip
-					label={<Round set={currentSet} />}
+					label={setToRoundText(currentSet)}
 					size="small"
 					variant="outlined"
 				/>

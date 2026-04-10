@@ -1,6 +1,6 @@
 /node_modules/
 .env
-/replays/*.slp
-/replays/*.zip
+/replays/**/*.slp
+/replays/**/*.zip
 /state.json
 /logs/

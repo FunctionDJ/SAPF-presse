@@ -46,10 +46,17 @@ export const fetchSetGames = async (setId: number) => {
 				selections: type({
 					character: { id: "number.integer >= 0" },
 					entrant: { id: "number.integer >= 0" },
-				}).array(),
-			}).array(),
+				})
+					.array()
+					.or("null"),
+			})
+				.array()
+				.or("null"),
 		},
 	}).assert(data);
 
-	return validatedData.set.games;
+	return (validatedData.set.games ?? []).map((game) => ({
+		...game,
+		selections: game.selections ?? [],
+	}));
 };

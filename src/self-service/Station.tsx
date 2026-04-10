@@ -59,6 +59,7 @@ const getCardBackgroundColor = (
 export const StationComponent = ({ station }: Props) => {
 	const [hwDialogOpen, setHwDialogOpen] = useState(false);
 	const [portDialogOpen, setPortDialogOpen] = useState(false);
+
 	const [resetDialogOpen, setResetDialogOpen] = useState(false);
 	const { currentSet } = station;
 

@@ -21,6 +21,10 @@ const fetchStartGGAndUpdateState = async () => {
 	 * but i don't know of a solution.
 	 */
 
+	// TODO the below breaks on tournaments with many/big queues:
+	// "[FetchStartGG] GraphQL error(s): Your query complexity is too high. A maximum of 1000 objects may be returned by each request. (actual: 2724)
+	// workaround: fetch queues with set ids first, then use p-queue or similar to fetch individual sets with the rest of the data we need
+
 	const data = await fetchStartGG(`
     query StreamQueues {
       streamQueue(tournamentId: ${globalState.startggTournamentId}, includePlayerStreams: false) {

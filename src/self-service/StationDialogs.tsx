@@ -1,4 +1,4 @@
-import { Check } from "@mui/icons-material";
+import { Check, Close } from "@mui/icons-material";
 import {
 	Button,
 	Dialog,
@@ -42,7 +42,12 @@ export const StationDialogs = ({
 			onClose={() => setResetDialogOpen(false)}
 			stationNumber={stationId}
 		/>
-		<Dialog open={hwDialogOpen} onClose={() => setHwDialogOpen(false)}>
+		<Dialog
+			open={hwDialogOpen}
+			onClose={() => setHwDialogOpen(false)}
+			fullWidth
+			maxWidth="xs"
+		>
 			<DialogTitle>
 				Starting set {entrantLabel(currentSet.entrantA)} vs.{" "}
 				{entrantLabel(currentSet.entrantB)}
@@ -50,10 +55,27 @@ export const StationDialogs = ({
 			<DialogContent>
 				<DialogContentText color="black" fontWeight={900}>
 					Did you complete handwarmers?
+					<br />
+					If not, cancel, and come back afterwards.
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<Button
+					size="large"
+					fullWidth
+					variant="contained"
+					color="secondary"
+					onClick={() => {
+						setHwDialogOpen(false);
+					}}
+					startIcon={<Close />}
+				>
+					Cancel
+				</Button>
+				<Button
+					size="large"
+					fullWidth
+					variant="contained"
 					startIcon={<Check />}
 					onClick={() => {
 						setHwDialogOpen(false);
@@ -65,10 +87,12 @@ export const StationDialogs = ({
 			</DialogActions>
 		</Dialog>
 		<PortsDialog
-			// use key={} to reset state when ports in global state update
-			// this isn't perfect and might be disruptive, but should be a functional and easy solution for now.
-			// when the Dialog is open, ideally you'd do something like show the user a notification that the ports were remotely changed and prompt them to accept or discard the remote update.
-			key={JSON.stringify(ports)}
+			// [FUTURE] improve remote port update handling
+			/**
+			 * the key={} trick doesn't seem to work well here because it seems to keep the dialog open on submit because submit updates ports. that, or "open" is never set to false in that scenario when using key={}
+			 *
+			 * ideally you'd do something like show the user a notification that the ports were remotely changed and prompt them to accept or discard the remote update.
+			 */
 			currentSet={currentSet}
 			open={portDialogOpen}
 			setOpen={setPortDialogOpen}

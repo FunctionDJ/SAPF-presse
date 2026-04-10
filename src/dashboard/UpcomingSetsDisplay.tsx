@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import type { UpcomingSet } from "../../backend/state";
 import { entrantLabel } from "../../shared/entrant-utilities";
-import { Round } from "../self-service/Round";
+import { setToRoundText } from "../shared-frontend/set-to-roundtext";
 
 interface Props {
 	sets: (typeof UpcomingSet.infer)[];
@@ -21,9 +21,7 @@ export function UpcomingSetsDisplay({ sets }: Props) {
 					<Typography variant="body2" color="text.secondary">
 						{entrantLabel(set.entrantA)} vs. {entrantLabel(set.entrantB)}
 					</Typography>
-					<Typography variant="body2">
-						— <Round set={set} />
-					</Typography>
+					<Typography variant="body2">— {setToRoundText(set)}</Typography>
 				</div>
 			))}
 		</div>

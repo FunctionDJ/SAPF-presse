@@ -1,5 +1,6 @@
 ## self-service
 
+- (!) needs to respect the stations "mode" and disable the station stuff completely, like controls, next up (?), current set status etc
 - _maybe_ listen to loggingSubscription errors ?
 - indicator für connection status mit backend
 - nach set ende das gerade abgeschlossene set noch 1-2 minuten anzeigen aber mit "next set" button

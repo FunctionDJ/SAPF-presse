@@ -137,9 +137,18 @@ export const reportBracketSetBySlippiData = async ({
 
 	// the following is the winnerId for the whole set
 
-	const sendWinnerId = setGames.length + 1 >= station.bestOf;
-	logger.info(`sendWinnerId: ${sendWinnerId}`);
-	const winnerId = sendWinnerId ? winnerEntrant.startggEntrantId : null;
+	const sendWinner =
+		currentSet.entrantA.score + currentSet.entrantB.score + 1 >= station.bestOf;
+
+	logger.info(`sendWinner: ${sendWinner}`);
+
+	if (sendWinner && gameData.length !== station.bestOf) {
+		logger.warn(
+			`Game data length (${gameData.length}) does not match expected bestOf (${station.bestOf})`,
+		);
+	}
+
+	const winnerId = sendWinner ? winnerEntrant.startggEntrantId : null;
 
 	await reportBracketSet({
 		winnerId,

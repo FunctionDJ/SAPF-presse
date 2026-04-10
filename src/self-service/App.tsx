@@ -37,7 +37,12 @@ export function App() {
 			<div className="flex gap-4 grow overflow-scroll p-4">
 				{subscription.data.stations.map((station) => (
 					<StationComponent
-						key={station.startggStationNumber}
+						key={
+							String(station.startggStationNumber) +
+							// this is probably a dirty hack but should ensure that on a currentSet update, the entire StationComponent is reset.
+							// otherwise the "Reset" dialog is opens itself again after a reset because of react state bla reasons.
+							String(station.currentSet?.startggSetId ?? 0)
+						}
 						station={station}
 					/>
 				))}
