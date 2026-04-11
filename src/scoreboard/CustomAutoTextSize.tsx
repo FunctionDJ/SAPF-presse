@@ -47,8 +47,8 @@ export function CustomAutoTextSize({
 				innerEl: innerElement,
 				containerEl: containerElement,
 				mode: "oneline",
-				minFontSizePx: 1,
-				maxFontSizePx: 18,
+				minFontSizePx: 10,
+				maxFontSizePx: 40,
 			});
 		},
 		[observer],
@@ -56,7 +56,7 @@ export function CustomAutoTextSize({
 
 	return (
 		<div ref={refCallback} className={className} id="test">
-			<Stroked stroke={stroke / 2.5}>{children}</Stroked>
+			<Stroked stroke={stroke / 6}>{children}</Stroked>
 		</div>
 	);
 }

@@ -18,7 +18,7 @@ export const LogoAndTitle = ({ centerText }: Props) => (
 					initial={{ scale: 0 }}
 					animate={centerText === "" ? {} : { scale: 1 }}
 					exit={{ scale: 0 }}
-					className="text-slate-50 absolute top-4/7 z-12 bg-slate-600 rounded-lg px-3 py-0.5"
+					className="text-slate-50 absolute top-4/7 z-12 bg-slate-600 rounded-xl px-3 py-0.5 text-[1.5vw]"
 				>
 					{centerText}
 				</motion.span>

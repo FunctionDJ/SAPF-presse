@@ -21,21 +21,29 @@ const participantToPlayerInCurrentSet = (
 
 const slotToCurrentSetEntrant = (
 	slot: typeof Slot.infer,
-): typeof EntrantInActiveStartGGSet.infer => ({
-	startggEntrantId: slot.entrant.id,
-	score: slot.standing.stats.score.value ?? 0,
-	player1: slot.entrant.participants[0]
-		? participantToPlayerInCurrentSet(slot.entrant.participants[0])
-		: {
+): typeof EntrantInActiveStartGGSet.infer => {
+	const { entrant } = slot
+
+	if (entrant === null) {
+		throw new Error("Undefined entrant for currentSet")
+	}
+
+	return ({
+		startggEntrantId: entrant.id,
+		score: slot.standing?.stats.score.value ?? 0,
+		player1: entrant.participants[0]
+			? participantToPlayerInCurrentSet(entrant.participants[0])
+			: {
 				startggParticipantId: null,
 				tag: "[missing participant]",
 				pronouns: "",
 				character: null,
 			},
-	player2: slot.entrant.participants[1]
-		? participantToPlayerInCurrentSet(slot.entrant.participants[1])
-		: null,
-});
+		player2: entrant.participants[1]
+			? participantToPlayerInCurrentSet(entrant.participants[1])
+			: null,
+	});
+};
 
 const participantToPlayerInUpcomingSet = (
 	participant: typeof Participant.infer,
@@ -47,13 +55,13 @@ const participantToPlayerInUpcomingSet = (
 const slotToUpcomingSetEntrant = (
 	slot: typeof Slot.infer,
 ): typeof Entrant.infer => ({
-	player1: slot.entrant.participants[0]
+	player1: slot.entrant?.participants[0]
 		? participantToPlayerInUpcomingSet(slot.entrant.participants[0])
 		: {
-				tag: "[missing participant]",
-				pronouns: "",
-			},
-	player2: slot.entrant.participants[1]
+			tag: "TBD",
+			pronouns: "",
+		},
+	player2: slot.entrant?.participants[1]
 		? participantToPlayerInUpcomingSet(slot.entrant.participants[1])
 		: null,
 });
@@ -154,8 +162,8 @@ export const transformStationByStreamQueueSets = (
 		} else {
 			const [slotA, slotB] = getSlotsFromSetOrThrow(ssgSetLastKnownSet);
 			currentSet.state = ssgSetLastKnownSet.state;
-			currentSet.entrantA.score = slotA.standing.stats.score.value ?? 0;
-			currentSet.entrantB.score = slotB.standing.stats.score.value ?? 0;
+			currentSet.entrantA.score = slotA.standing?.stats.score.value ?? 0;
+			currentSet.entrantB.score = slotB.standing?.stats.score.value ?? 0;
 			return;
 		}
 	}

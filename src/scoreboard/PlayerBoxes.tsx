@@ -13,14 +13,14 @@ export const PlayerBoxes = ({ state }: Props) => (
 			align="R"
 			className="mt-[10%]"
 			style={{ backgroundColor: scoreboardAccentColors.cherry }}
-			station={state.stations[0]}
+			station={state.stations[1]}
 		/>
 		<PlayerBox
 			uniqueKey="2"
 			align="L"
 			className="mt-[40%]"
 			style={{ backgroundColor: scoreboardAccentColors.orange }}
-			station={state.stations[1]}
+			station={state.stations[0]}
 		/>
 		<PlayerBox
 			uniqueKey="3"

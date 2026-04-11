@@ -11,14 +11,14 @@ export const Participant = type({
 
 export const Slot = type({
 	slotIndex: "number",
-	standing: {
+	standing: type({
 		stats: {
 			score: {
 				value: "number | null",
 			},
 		},
-	},
-	entrant: {
+	}).or("null"),
+	entrant: type({
 		id: "number",
 		name: "string",
 		team: type({
@@ -26,7 +26,7 @@ export const Slot = type({
 			name: "string",
 		}).or("null"),
 		participants: Participant.array(),
-	},
+	}).or("null"),
 });
 
 const SetStateFromStartgg = type("number").pipe((value) => {
