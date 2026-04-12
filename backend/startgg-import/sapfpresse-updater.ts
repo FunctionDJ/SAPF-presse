@@ -90,8 +90,9 @@ const fetchStartGGAndUpdateState = async () => {
 	if (streamQueue === undefined) {
 		const message = `Stream queue with id ${globalState.startggStreamQueueIdToTrack} not found in start.gg response, either wrong tournament or deleted stream queue configured`;
 
-		prefixLogger("StartggImport").error(message);
-		throw new Error(message);
+		prefixLogger("StartggImport").warn(message);
+return
+		// throw new Error(message);
 	}
 
 	updateStateSync((state) => {

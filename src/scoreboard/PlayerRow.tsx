@@ -32,7 +32,7 @@ export const PlayerRow = ({ uniqueKey, className, align, entrant }: Props) => {
 				<AnimatePresence mode="wait">
 					<motion.div
 						key={uniqueKey + "pronouns" + entrant.pronouns}
-						className={`absolute z-10 -top-[1.8vw] ${pronounsClass} text-[1.4vw]`}
+						className={`absolute z-10 -top-[1.5vw] ${pronounsClass} text-[1.4vw]`}
 						initial={{ opacity: 0, scale: 0.5 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, transition: { duration: 0.1 } }}

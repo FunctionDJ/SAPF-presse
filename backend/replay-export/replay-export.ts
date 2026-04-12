@@ -136,9 +136,17 @@ export const startReplayWriter = async (
 		consoleNickname: `Station ${stationNumber}`,
 	});
 
-	stream.on(SlpStreamEvent.RAW, (data) => {
-		fileWriter.write(Buffer.from(data.payload));
-	});
+	try {
+		stream.on(SlpStreamEvent.RAW, (data) => {
+			try {
+				fileWriter.write(Buffer.from(data.payload));
+			} catch (error) {
+				logger.warn("FileWriter Error", error)
+			}
+		});
+	} catch (error) {
+		logger.warn("Stream Error", error)
+	}
 
 	fileWriter.on(SlpFileWriterEvent.NEW_FILE, (filePath: string) => {
 		logger.info(`Started recording replay: ${filePath}`);

@@ -39,10 +39,10 @@ export const entrantToPronouns = (entrant: typeof Entrant.infer) => {
 		return "";
 	}
 
-	let result = entrant.player1.pronouns.trim() || "(n/a)";
+	let result = entrant.player1.pronouns.trim() || "n/a";
 
 	if (entrant.player2) {
-		result += " & " + (entrant.player2.pronouns.trim() || "(n/a)");
+		result += " & " + (entrant.player2.pronouns.trim() || "n/a");
 	}
 
 	return result;

@@ -10,7 +10,19 @@ export const loadState = async (): Promise<typeof State.infer> => {
 	const stateFile = Bun.file("state.json");
 
 	if (await stateFile.exists()) {
-		const json = (await stateFile.json()) as unknown;
+		let json;
+
+		try {
+			json = (await stateFile.json()) as unknown;
+
+		} catch (error) {
+			try {
+				const text = await stateFile.text()
+				json = JSON.parse(text.slice(0, -2)) // "} weirdness
+			} catch (error) {
+				console.error("ja es ist das hier")
+			}
+		}
 
 		if (isRecord(json)) {
 			const { stations } = json;
