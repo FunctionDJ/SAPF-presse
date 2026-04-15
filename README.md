@@ -75,6 +75,13 @@ When there's no set in the "current set" slot for a given station, AM will take 
 
 Since AM also reports and closes sets automatically using Slippi networking data on start.gg, those completed sets are removed from the stream queue, causing AM to automatically adopt the next set in the queue without any human interaction required.
 
+## What's needed to use Automeleec?
+
+- a **stable** internet connection. AM currently heavily relies on being able to communicate with start.gg frequently. Outages can cause wrong set score reports, the stream queue to not progress correctly, and therefore the layout and replay file names to be wrong.
+- a start.gg account to generate an API key for Automeleec (see `.env.example`) with permissions to report set data for the tournament you want to stream
+- as many networked Wii consoles as you want to use with Automeleec (Wifi **_might_** be fine if you control the Wifi network, since using Slippi Mirroring + Relay with Automeleec is broken anyway at the moment, but LAN adapters for Wii are always preferred for a stable connection)
+- disable pause in Melee because Automeleec currently doesn't have "pause-ragequit" detection and won't update the score in such cases
+
 ## Is it production-ready?
 
 Absolutely not. Automeleec has so far only been used once at SAPF 2 for the side/quad-stream. Automeleec is experimental software. See the [list of bugs](https://github.com/FunctionDJ/Automeleec/issues?q=state%3Aopen%20label%3Abug).

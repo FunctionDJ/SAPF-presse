@@ -5,6 +5,12 @@ import { appRouter } from "./router";
 import "./startgg-import/automeleec-updater";
 import { prefixLogger } from "./logger";
 
+if (Bun.env.STARTGG_API_KEY === undefined) {
+	throw new Error(
+		"Error: STARTGG_API_KEY environment variable is not set. See .env.example and restart Automeleec.",
+	);
+}
+
 /**
  * we're checking for temp replay files here and crashing early
  * so that errors are avoided later with the replay exporter when it might be a lot more annoying to deal with or maybe even when data is already lost because a replay file is discarded or there's some other conflict.
