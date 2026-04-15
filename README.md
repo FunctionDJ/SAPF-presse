@@ -10,7 +10,7 @@ Currently designed for quad-streams (4 stations/setups streamed at once) but wil
 
 ![Screenshot of the SAPF 2 sidestream](docs/scoreboard.png)
 
-<p style="text-align: center; font-style: italic;">Overlay screenshot was taken during production - other screenshots during development. </p>
+<p align="center"><em>Overlay screenshot was taken during production - other screenshots during development.</em></p>
 
 ## Dashboard
 
