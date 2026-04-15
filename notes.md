@@ -44,8 +44,6 @@ https://github.com/SSBDoppler/slippi-hud
 
 https://github.com/Readek/Melee-Stream-Tool
 
-- rename to sapfladen???
-
 - das system soll in der lage sein, es zu verkraften, wenn ein set per self-service erst nach dem start eines matches gestartet wurde, also dass per slippi trotzdem immer die aktuellen characters und die stage gespeichert werden, falls erst danach ein match gestartet und dann character/stage für mindestens das overlay, aber im optimalfall für startgg vorhanden sind
 
 ## future
@@ -59,4 +57,4 @@ https://github.com/Readek/Melee-Stream-Tool
 
 ## concerns
 
-- if a startgg set that's a currentSet in sapfpresse is accidentally removed from the stream queue, removed from the station, or assigned a non-side-stream station, can sapfpresse recover from that after the error is corrected or does it wipe state data?
+- if a startgg set that's a currentSet in AM is accidentally removed from the stream queue, removed from the station, or assigned a non-side-stream station, can AM recover from that after the error is corrected or does it wipe state data?

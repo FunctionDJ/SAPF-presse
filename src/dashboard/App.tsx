@@ -66,7 +66,7 @@ export function App() {
 			<CssBaseline />
 			<div className="p-4 flex flex-col gap-4">
 				<div className="flex justify-between items-center">
-					<h1 className="text-2xl font-bold">SAPFpresse Dashboard</h1>
+					<h1 className="text-2xl font-bold">Automeleec Dashboard</h1>
 					<DashboardSettingsControl state={state} />
 				</div>
 				<CenterTextControl value={state.centerText} />

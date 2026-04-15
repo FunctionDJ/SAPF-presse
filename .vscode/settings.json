@@ -23,11 +23,11 @@
 			"approve": true,
 			"matchCommandLine": true
 		},
-		"/^cd /home/function/git/SAPF-presse && bun lint$/": {
+		"/^cd /home/function/git/Automeleec && bun lint$/": {
 			"approve": true,
 			"matchCommandLine": true
 		},
-		"/^cd /home/function/git/SAPF-presse && bun typecheck$/": {
+		"/^cd /home/function/git/Automeleec && bun typecheck$/": {
 			"approve": true,
 			"matchCommandLine": true
 		},

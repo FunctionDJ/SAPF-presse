@@ -68,7 +68,7 @@ const getReplayFileFolderName = (stationNumber: number) => {
 	const { currentSet } = station;
 
 	if (currentSet === null) {
-		return `(Ended at ${dateToHHMM(new Date())}) – Station ${stationNumber} – [NO SET INFO, CURRENT SET WAS NULL] – Sapf2`;
+		return `(Ended at ${dateToHHMM(new Date())}) – Station ${stationNumber} – [NO SET INFO, CURRENT SET WAS NULL] – Sapf2`; // TODO same replace as below
 	}
 
 	const HHMM = dateToHHMM(currentSet.startedAt ?? new Date());
@@ -76,7 +76,7 @@ const getReplayFileFolderName = (stationNumber: number) => {
 	const entrant2String = getEntrantString(currentSet.entrantB);
 	const round = getRoundString(currentSet);
 
-	return `${HHMM} – ${entrant1String} vs ${entrant2String} – ${round} – Sapf2`;
+	return `${HHMM} – ${entrant1String} vs ${entrant2String} – ${round} – Sapf2`; // TODO replace Sapf2 with fetched tournament name from startgg
 };
 
 const getMatchNumber = (stationNumber: number) => {
@@ -88,18 +88,7 @@ const getMatchNumber = (stationNumber: number) => {
 		return null;
 	}
 
-	const scoreA = currentSet.entrantA.score;
-	const scoreB = currentSet.entrantB.score;
-
-	if (scoreA === null || scoreB === null) {
-		logger.warn(
-			`getMatchNumber: scoreA or scoreB is null (scoreA: ${scoreA}, scoreB: ${scoreB}), returning null`,
-		);
-
-		return null;
-	}
-
-	return scoreA + scoreB + 1;
+	return currentSet.entrantA.score + currentSet.entrantB.score + 1;
 };
 
 const getReplayFilePath = (stationNumber: number) => {

@@ -2,7 +2,7 @@ import { createHTTPHandler } from "@trpc/server/adapters/standalone";
 import { createServer } from "node:http";
 import { createServer as createViteServer, type ViteDevServer } from "vite";
 import { appRouter } from "./router";
-import "./startgg-import/sapfpresse-updater";
+import "./startgg-import/automeleec-updater";
 import { prefixLogger } from "./logger";
 
 /**
