@@ -175,7 +175,7 @@ export function StationPanel({ station }: { station: typeof Station.infer }) {
 						/>
 					)}
 
-					<TextField
+					{/* <TextField
 						label="Commentators"
 						size="small"
 						className="grow"
@@ -184,7 +184,7 @@ export function StationPanel({ station }: { station: typeof Station.infer }) {
 							setCommentators(event.target.value);
 							submitCommentators(event.target.value);
 						}}
-					/>
+					/> */}
 				</div>
 
 				{station.mode === "entrant-override" && (

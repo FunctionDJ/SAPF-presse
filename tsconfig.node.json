@@ -26,5 +26,10 @@
 
 		"allowSyntheticDefaultImports": true
 	},
-	"include": ["vite.config.ts", "backend/**/*.ts", "shared/**/*.ts"]
+	"include": [
+		"vite.config.ts",
+		"backend/**/*.ts",
+		"shared/**/*.ts",
+		"backend/test.js"
+	]
 }
