@@ -79,7 +79,7 @@ Since AM also reports and closes sets automatically using Slippi networking data
 
 - a **stable** internet connection. AM currently heavily relies on being able to communicate with start.gg frequently. Outages can cause wrong set score reports, the stream queue to not progress correctly, and therefore the layout and replay file names to be wrong.
 - a start.gg account to generate an API key for Automeleec (see `.env.example`) with permissions to report set data for the tournament you want to stream
-- as many networked Wii consoles as you want to use with Automeleec (Wifi **_might_** be fine if you control the Wifi network, since using Slippi Mirroring + Relay with Automeleec is broken anyway at the moment, but LAN adapters for Wii are always preferred for a stable connection)
+- as many networked Wii consoles with Slippi Nintendont as you want to use with Automeleec (Wifi **_might_** be fine if you control the Wifi network, since using Slippi Mirroring + Relay with Automeleec is broken anyway at the moment, but LAN adapters for Wii are always preferred for a stable connection)
 - disable pause in Melee because Automeleec currently doesn't have "pause-ragequit" detection and won't update the score in such cases
 
 ## Is it production-ready?
