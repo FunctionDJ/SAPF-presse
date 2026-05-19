@@ -109,6 +109,15 @@ No guarantees. Things will break, see "Is it production-ready?".
 
 There are a ton of ideas for enhancements to Automeleec. See the [issues page](https://github.com/FunctionDJ/Automeleec/issues).
 
+## Why isn't Automeleec open-source?
+
+The use and modification of Automeleec for educational purposes is explicitly allowed in the [LICENSE](LICENSE) file.
+
+For any use beyond this, I want to have control over Automeleec. That doesn't mean that I want to financially profit from Automeleec - quite the opposite.
+If Automeleec becomes production-ready, I might change the project's license to a strong copy-left license like AGPL3.
+But until then, if you want to use this software for anything beyond what's allowed by the current license, please reach out to me. (See "Get in touch" or even just open an issue)
+If you're a tinkerer or a Smash community member or anything like that, I'll very likely give you permission to try, use and/or modify this software.
+
 ## Runtime compatibility
 
 ### Bun
